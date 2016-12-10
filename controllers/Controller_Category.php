@@ -1,12 +1,12 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: Marek
- * Date: 9.12.2016
- * Time: 22:10
- */
+require_once dirname(__DIR__).'/models/Category.php';
+
 class Controller_Category
 {
-
+    public function generateMenu()
+    {
+        $categories = Category::getAllCategories();
+        include dirname(__DIR__).'/views/menu.php';
+    }
 }
