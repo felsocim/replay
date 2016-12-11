@@ -34,6 +34,27 @@
                     </div>
                     <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Chercher</button>
                 </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <?php
+                            if(isauthenticated())
+                            {
+                                echo '<a href="'.USER_ACCOUNT.'">'.$_SESSION['user_fullname'].'</a>';
+                            }
+                        ?>
+                    </li>
+                    <?php
+                        if(isauthenticated())
+                        {
+                            echo '<li><p class="navbar-button"><a href="'.'/user/logout'.'" class="btn btn-danger"><span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;Déconnexion</a></p></li>';
+                        }
+                        else
+                        {
+                            echo '<li><p class="navbar-button"><a href="'.'/user/login'.'" class="btn btn-info"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;&nbsp;Connexion</a></p></li>';
+                            echo '<li><p class="navbar-button">&nbsp;<a href="'.'/user/signup'.'" class="btn btn-success"><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>&nbsp;&nbsp;Inscription</a></p></li>';
+                        }
+                    ?>
+                </ul>
             </div>
         </div>
     </nav>

@@ -1,5 +1,6 @@
 body {
-    font-family: 'Varela Round', sans-serif;
+    font-family: 'Arial', sans-serif;
+    font-size: 14px;
     padding: 0;
     margin: 0;
 }
@@ -12,11 +13,22 @@ body {
     padding: 0;
 }
 
+.video-actions {
+    margin-bottom: 10px;
+}
+
 .navbar {
     border-radius: 0;
-    font-size: 12pt;
 }
 
 .navbar-brand {
     padding: 8px 15px;
+}
+
+.navbar-button {
+    padding-top: 7.5px;
+}
+
+.btn {
+    font-weight: bold;
 }

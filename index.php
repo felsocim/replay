@@ -13,6 +13,7 @@ try {
 
 Kernel::setConnection($oci);
 
+session_start();
 ob_start();
 
 require_once 'controllers/Controller_Category.php';
@@ -69,7 +70,9 @@ $content = ob_get_clean();
     <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo HOME ?>/res/css/bootstrap.css" type="text/css">
     <link rel="stylesheet" href="<?php echo HOME ?>/res/css/front-end.css" type="text/css">
+    <link rel="stylesheet" href="<?php echo HOME ?>/res/js/jquery-ui-1.11.4/jquery-ui.min.css" type="text/css">
     <script src="<?php echo HOME ?>/res/js/jquery-2.2.1.min.js" type="text/javascript"></script>
+    <script src="<?php echo HOME ?>/res/js/jquery-ui-1.11.4/jquery-ui.min.js" type="text/javascript"></script>
     <script src="<?php echo HOME ?>/res/js/bootstrap.js" type="text/javascript"></script>
 </head>
 <body>

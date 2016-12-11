@@ -15,4 +15,12 @@ class Controller_Video
         $videos = Video::getVideosByCategory($id_cat);
         include dirname(__DIR__).'/views/video/list.php';
     }
+
+    public function view($id_video)
+    {
+        $video = Video::getVideoById($id_video);
+        include dirname(__DIR__).'/views/video/oneandonly.php';
+        $videos = Video::getAllEpisodesByVideo($id_video);
+        include dirname(__DIR__).'/views/video/list.php';
+    }
 }

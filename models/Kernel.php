@@ -10,6 +10,7 @@ abstract class Kernel
         {
             $item_name = ucfirst($index);
             $method = 'set'.$item_name;
+
             if(method_exists($this, $method))
             {
                 $this->$method($value);
