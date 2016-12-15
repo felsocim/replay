@@ -12,7 +12,7 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="<?php echo HOME; ?>">Accueil</a></li>
+                    <li><a href="<?php if(isauthenticated()) echo HOME.'/video/home/'.getAuthenticated(); else echo HOME; ?>">Accueil</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Catégories <span class="caret"></span></a>
                         <ul class="dropdown-menu">
@@ -39,7 +39,15 @@
                         <?php
                             if(isauthenticated())
                             {
-                                echo '<a href="'.USER_ACCOUNT.'">'.$_SESSION['user_fullname'].'</a>';
+                                echo '<li class="dropdown">';
+                                echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$_SESSION['user_fullname'].'&nbsp;<span class="caret"></span></a>';
+                                echo '<ul class="dropdown-menu">';
+                                echo '<li><a href="'.USER_ACCOUNT.'">Mon compte</a></li>';
+                                echo '<li><a href="'.HOME.'/video/myhistory/'.getAuthenticated().'">Mon historique</a></li>';
+                                echo '<li><a href="'.HOME.'/video/myfavorites/'.getAuthenticated().'">Mes favoris</a></li>';
+                                echo '<li><a href="'.HOME.'/programme/mysubscriptions/'.getAuthenticated().'">Mes abonnements</a></li>';
+                                echo '</ul>';
+                                echo '</li>';
                             }
                         ?>
                     </li>

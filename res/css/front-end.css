@@ -13,6 +13,10 @@ body {
     padding: 0;
 }
 
+.text-red {
+    color: darkred;
+}
+
 .video-actions {
     margin-bottom: 10px;
 }

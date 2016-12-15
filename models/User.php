@@ -22,12 +22,12 @@ class User extends Kernel
         parent::__construct($array);
     }
 
-    public function getId()
+    public function getIdutilisateur()
     {
         return $this->_id;
     }
 
-    public function setId($id)
+    public function setIdutilisateur($id)
     {
         $this->_id = $id;
     }

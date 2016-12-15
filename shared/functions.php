@@ -38,3 +38,8 @@ function isauthenticated()
 
     return false;
 }
+
+function getAuthenticated()
+{
+    return $_SESSION['user_id'];
+}

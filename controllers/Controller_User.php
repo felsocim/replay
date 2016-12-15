@@ -29,11 +29,11 @@ class Controller_User
                 else if(password_verify($_POST['motdepasse'], $user->getMotdepasse()))
                 {
                     $_SESSION['user_fullname'] = $user->getPrenom().' '.$user->getNom();
-                    $_SESSION['user_id'] = $user->getId();
+                    $_SESSION['user_id'] = $user->getIdutilisateur();
                     $_SESSION['user_group'] = $user->getGroupe();
                     $_SESSION['authenticated'] = true;
 
-                    header('Location: '.HOME);
+                    header('Location: '.HOME.'/video/home/'.$user->getIdutilisateur());
                     exit();
                 }
                 else
