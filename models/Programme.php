@@ -6,6 +6,7 @@ class Programme extends Kernel
 {
     private $_id;
     private $_idcategorie;
+    private $_categorie;
     private $_titre;
     private $_description;
     private $_chaine;
@@ -33,6 +34,16 @@ class Programme extends Kernel
     public function setIdcategorie($idcategorie)
     {
         $this->_idcategorie = $idcategorie;
+    }
+
+    public function getCategorie()
+    {
+        return $this->_categorie;
+    }
+
+    public function setCategorie($categorie)
+    {
+        $this->_categorie = $categorie;
     }
 
     public function getTitre()
@@ -63,6 +74,108 @@ class Programme extends Kernel
     public function setChaine($chaine)
     {
         $this->_chaine = $chaine;
+    }
+
+    public static function getAllProgrammes()
+    {
+        $result = array();
+        $oci = self::getConnection();
+
+        $query = $oci->prepare("SELECT e.*, c.titre AS categorie FROM emission e LEFT JOIN categorie c ON e.idcategorie=c.idcategorie");
+        $query->execute();
+        $rows = $query->fetchAll();
+
+        foreach ($rows as $row)
+        {
+            $programme = new Programme($row);
+            array_push($result, $programme);
+        }
+
+        return $result;
+    }
+
+    public static function getProgrammeById($id_emission)
+    {
+        $oci = self::getConnection();
+
+        $query = $oci->prepare("SELECT e.*, c.titre AS categorie FROM emission e LEFT JOIN categorie c ON e.idcategorie=c.idcategorie WHERE e.idemission=:emid");
+        $query->bindParam(':emid', $id_emission, PDO::PARAM_INT);
+        $query->execute();
+        $row = $query->fetch();
+        $result = null;
+
+        if($row != null)
+        {
+            $result = new Programme($row);
+        }
+
+        return $result;
+    }
+
+    public static function getProgrammeByTitle($title_emission)
+    {
+        $oci = self::getConnection();
+
+        $query = $oci->prepare("SELECT e.*, c.titre AS categorie FROM emission e LEFT JOIN categorie c ON e.idcategorie=c.idcategorie WHERE e.titre=:emitit");
+        $query->bindParam(':emitit', $title_emission, PDO::PARAM_STR);
+        $query->execute();
+        $row = $query->fetch();
+        $result = null;
+
+        if($row != null)
+        {
+            $result = new Programme($row);
+        }
+
+        return $result;
+    }
+
+    public static function createProgramme($array)
+    {
+        $programme = new Programme($array);
+
+        $oci = self::getConnection();
+
+        $query = $oci->prepare("INSERT INTO emission VALUES (emi.nextval, :catid, :titre, :description, :chaine)");
+        $query->bindParam(':catid', $programme->getIdcategorie(), PDO::PARAM_INT);
+        $query->bindParam(':titre', $programme->getTitre(), PDO::PARAM_STR);
+        $query->bindParam(':description', $programme->getDescription(), PDO::PARAM_STR);
+        $query->bindParam(':chaine', $programme->getChaine(), PDO::PARAM_STR);
+        $query->execute();
+
+        return $programme;
+    }
+
+    public function updateProgramme()
+    {
+        if(!is_null($this->_id))
+        {
+            $oci = self::getConnection();
+
+            $query = $oci->prepare("UPDATE emission SET idcategorie=:catid, titre=:etitre, description=:edesc, chaine=:echaine WHERE idemission=:emid");
+            $query->bindParam(':catid', $this->_idcategorie, PDO::PARAM_INT);
+            $query->bindParam(':etitre', $this->_titre, PDO::PARAM_STR);
+            $query->bindParam(':edesc', $this->_description, PDO::PARAM_STR);
+            $query->bindParam(':echaine', $this->_chaine, PDO::PARAM_STR);
+            $query->bindParam(':emid', $this->_id, PDO::PARAM_INT);
+            $query->execute();
+        }
+
+        return;
+    }
+
+    public function deleteProgramme()
+    {
+        if(!is_null($this->_id))
+        {
+            $oci = self::getConnection();
+
+            $query = $oci->prepare("DELETE FROM emission WHERE idemission=:emid");
+            $query->bindParam(':emid', $this->_id, PDO::PARAM_INT);
+            $query->execute();
+        }
+
+        return;
     }
 
     public static function setProgrammeSubscribed($id_user, $id_emission)

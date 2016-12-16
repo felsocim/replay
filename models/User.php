@@ -72,12 +72,12 @@ class User extends Kernel
         $this->_prenom = $prenom;
     }
 
-    public function getDatedenaissance()
+    public function getDatenaissance()
     {
         return $this->_datedenaissance;
     }
 
-    public function setDatedenaissance($datedenaissance)
+    public function setDatenaissance($datedenaissance)
     {
         $this->_datedenaissance = $datedenaissance;
     }
@@ -164,20 +164,126 @@ class User extends Kernel
         return null;
     }
 
+    public static function getUserById($id_user)
+    {
+        $oci = self::getConnection();
+
+        $query = $oci->prepare("SELECT * FROM utilisateur WHERE idutilisateur=:userid");
+        $query->bindParam(":userid", $id_user, PDO::PARAM_INT);
+        $query->execute();
+
+        $row = $query->fetch();
+        $result = null;
+
+        if($row != null)
+        {
+            $result = new User($row);
+        }
+
+        return $result;
+    }
+
     public static function createUser($array)
     {
         $user = new User($array);
         $oci = self::getConnection();
 
-        $query = $oci->prepare("INSERT INTO utilisateur VALUES (uti.nextval, :identifiant, :nom, :prenom, :motdepasse, TO_DATE(:datedenaissance, 'DD/MM/YYYY'), :courriel, DEFAULT, sysdate, DEFAULT, DEFAULT, :nationalite)");
+        $query = $oci->prepare("INSERT INTO utilisateur VALUES (uti.nextval, :identifiant, :nom, :prenom, :motdepasse, TO_DATE(:datenaissance, 'DD/MM/YYYY'), :courriel, DEFAULT, sysdate, :grp, DEFAULT, :nationalite)");
         $query->bindParam(":identifiant", $user->_identifiant, PDO::PARAM_STR);
         $query->bindParam(":nom", $user->_nom, PDO::PARAM_STR);
         $query->bindParam(":prenom", $user->_prenom, PDO::PARAM_STR);
         $query->bindParam(":motdepasse", $user->_motdepasse, PDO::PARAM_STR);
-        $query->bindParam(":datedenaissance", $user->_datedenaissance, PDO::PARAM_STR);
+        $query->bindParam(":datenaissance", $user->_datedenaissance, PDO::PARAM_STR);
         $query->bindParam(":courriel", $user->_courriel, PDO::PARAM_STR);
         $query->bindParam(":nationalite", $user->_nationalite, PDO::PARAM_STR);
+        $query->bindParam(":grp", $user->_groupe, PDO::PARAM_STR);
 
         $query->execute();
+
+        return $user;
+    }
+
+    public function updateUser()
+    {
+        if(!is_null($this->_id))
+        {
+            $oci = self::getConnection();
+
+            $query = $oci->prepare("UPDATE utilisateur SET identifiant=:uident, nom=:unom, prenom=:uprenom, motdepasse=:umdp, datenaissance=:dns, courriel=:umail, groupe=:grp, nationalite=:unat WHERE idutilisateur=:userid");
+            $query->bindParam(':uident', $this->_identifiant, PDO::PARAM_STR);
+            $query->bindParam(':unom', $this->_nom, PDO::PARAM_STR);
+            $query->bindParam(':uprenom', $this->_prenom, PDO::PARAM_STR);
+            $query->bindParam(':umdp', $this->_motdepasse, PDO::PARAM_STR);
+            $query->bindParam(':dns', $this->_datedenaissance, PDO::PARAM_STR);
+            $query->bindParam(':umail', $this->_courriel, PDO::PARAM_STR);
+            $query->bindParam(':unat', $this->_nationalite, PDO::PARAM_STR);
+            $query->bindParam(':grp', $this->_groupe, PDO::PARAM_STR);
+            $query->bindParam(':userid', $this->_id, PDO::PARAM_INT);
+            $query->execute();
+        }
+
+        return;
+    }
+
+    public function updateNewsletter()
+    {
+        if(!is_null($this->_id))
+        {
+            $oci = self::getConnection();
+
+            $query = $oci->prepare("UPDATE utilisateur SET abonnementnewsletter=:abo WHERE idutilisateur=:userid");
+            $query->bindParam(':abo', $this->_abonnementnewsletter, PDO::PARAM_STR);
+            $query->bindParam(':userid', $this->_id, PDO::PARAM_INT);
+            $query->execute();
+        }
+
+        return;
+    }
+
+    public function updateLastConnectionDate()
+    {
+        if(!is_null($this->_id))
+        {
+            $oci = self::getConnection();
+
+            $query = $oci->prepare("UPDATE utilisateur SET datederniereconnexion=sysdate WHERE idutilisateur=:userid");
+            $query->bindParam(':userid', $this->_id, PDO::PARAM_INT);
+            $query->execute();
+        }
+
+        return;
+    }
+
+    public function deleteUser()
+    {
+        if(!is_null($this->_id))
+        {
+            $oci = self::getConnection();
+
+            $query = $oci->prepare("DELETE FROM utilisateur WHERE idutilisateur=:userid");
+            $query->bindParam(':userid', $this->_id, PDO::PARAM_INT);
+            $query->execute();
+        }
+
+        return;
+    }
+
+    public static function getAllUsers()
+    {
+        $result = array();
+        $oci = self::getConnection();
+
+        $query = $oci->prepare("SELECT * FROM utilisateur");
+        $query->execute();
+
+        $rows = $query->fetchAll();
+
+        foreach ($rows as $row)
+        {
+            $user = new User($row);
+            array_push($result, $user);
+        }
+
+        return $result;
     }
 }

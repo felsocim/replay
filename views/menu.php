@@ -27,13 +27,21 @@
                             ?>
                         </ul>
                     </li>
+                    <?php
+                        if(isadmin())
+                        {
+                            echo '<li class="dropdown">';
+                            echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><strong>Panneau d\'administration</strong> <span class="caret"></span></a>';
+                            echo '<ul class="dropdown-menu">';
+                            echo '<li><a href="'.HOME.'/category/manage">Gestion de catégories</a></li>';
+                            echo '<li><a href="'.HOME.'/programme/manage">Gestion d\'émissions</a></li>';
+                            echo '<li><a href="'.HOME.'/video/manage">Gestion de vidéos</a></li>';
+                            echo '<li><a href="'.HOME.'/user/manage">Gestion d\'utilisateurs</a></li>';
+                            echo '</ul>';
+                            echo '</li>';
+                        }
+                    ?>
                 </ul>
-                <form class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Rechercher une vidéo">
-                    </div>
-                    <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search" aria-hidden="true"></span>&nbsp;Chercher</button>
-                </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
                         <?php
@@ -42,7 +50,7 @@
                                 echo '<li class="dropdown">';
                                 echo '<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'.$_SESSION['user_fullname'].'&nbsp;<span class="caret"></span></a>';
                                 echo '<ul class="dropdown-menu">';
-                                echo '<li><a href="'.USER_ACCOUNT.'">Mon compte</a></li>';
+                                echo '<li><a href="'.HOME.'/user/profile/'.getAuthenticated().'">Mon compte</a></li>';
                                 echo '<li><a href="'.HOME.'/video/myhistory/'.getAuthenticated().'">Mon historique</a></li>';
                                 echo '<li><a href="'.HOME.'/video/myfavorites/'.getAuthenticated().'">Mes favoris</a></li>';
                                 echo '<li><a href="'.HOME.'/programme/mysubscriptions/'.getAuthenticated().'">Mes abonnements</a></li>';

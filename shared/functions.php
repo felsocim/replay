@@ -39,7 +39,51 @@ function isauthenticated()
     return false;
 }
 
+function isadmin()
+{
+    if(isauthenticated() && ($_SESSION['user_group'] == 'A' || $_SESSION['user_group'] == 'S'))
+        return true;
+
+    return false;
+}
+
+function issuperuser()
+{
+    if(isauthenticated() && $_SESSION['user_group'] == 'S')
+        return true;
+
+    return false;
+}
+
 function getAuthenticated()
 {
     return $_SESSION['user_id'];
+}
+
+function group_verbose($grp)
+{
+    switch($grp)
+    {
+        case 'U':
+            return 'Utilisateur standard';
+        case 'A':
+            return 'Administrateur';
+        case 'S':
+            return 'Superutilisateur';
+        default:
+            return 'Groupe inconnu';
+    }
+}
+
+function newsletter_verbose($rep)
+{
+    switch($rep)
+    {
+        case 'N':
+            return 'Non';
+        case 'Y':
+            return 'Oui';
+        default:
+            return 'Indisponible';
+    }
 }

@@ -313,6 +313,94 @@ class Video extends Kernel
         return;
     }
 
+    public static function createVideo($array)
+    {
+        $video = new Video($array);
+
+        $idemission = $video->getIdemission();
+        $titre = $video->getTitre();
+        $description = $video->getDescription();
+        $duree = $video->getDuree();
+        $datepremiere = $video->getDatepremiere();
+        $origine = $video->getOrigine();
+        $datevalidite = $video->getDatevalidite();
+        $embed = $video->getEmbed();
+
+        $oci = self::getConnection();
+
+        $query = $oci->prepare("INSERT INTO video VALUES (vid.nextval, :emid, :etit, :edesc, :eduree, TO_DATE(:edatep, 'DD.MM.YY'), :eorigine, TO_DATE(:edatev, 'DD.MM.YY'), DEFAULT, :vembed)");
+        $query->bindParam(':emid', $idemission, PDO::PARAM_INT);
+        $query->bindParam(':etit', $titre, PDO::PARAM_STR);
+        $query->bindParam(':edesc', $description, PDO::PARAM_STR);
+        $query->bindParam(':eduree', $duree, PDO::PARAM_INT);
+        $query->bindParam(':edatep', $datepremiere, PDO::PARAM_STR);
+        $query->bindParam(':eorigine', $origine, PDO::PARAM_STR);
+        $query->bindParam(':edatev', $datevalidite, PDO::PARAM_STR);
+        $query->bindParam(':vembed', $embed, PDO::PARAM_STR);
+        $query->execute();
+
+        $query = $oci->prepare("INSERT INTO episode (idepisode, idvideo, idemission) VALUES (epi.nextval, vid.currval, :emid)");
+        $query->bindParam(':emid', $idemission, PDO::PARAM_INT);
+        $query->execute();
+
+        return $video;
+    }
+
+    public function updateVideo()
+    {
+        if(!is_null($this->_idvideo))
+        {
+            $oci = self::getConnection();
+
+            $query = $oci->prepare("UPDATE video SET idemission=:emid, titre=:vtit, description=:vdesc, duree=:vduree, datepremiere=:vdatep, origine=:vorigine, datevalidite=:vdatev, embed=:vembed WHERE idvideo=:videoid");
+            $query->bindParam(':videoid', $this->_idvideo, PDO::PARAM_INT);
+            $query->bindParam(':emid', $this->_idemission, PDO::PARAM_INT);
+            $query->bindParam(':vtit', $this->_titre, PDO::PARAM_STR);
+            $query->bindParam(':vdesc', $this->_description, PDO::PARAM_STR);
+            $query->bindParam(':vduree', $this->_duree, PDO::PARAM_INT);
+            $query->bindParam(':vdatep', $this->_datepremiere, PDO::PARAM_STR);
+            $query->bindParam(':vorigine', $this->_origine, PDO::PARAM_STR);
+            $query->bindParam(':vdatev', $this->_datevalidite, PDO::PARAM_STR);
+            $query->bindParam(':vembed', $this->_embed, PDO::PARAM_STR);
+            $query->execute();
+        }
+
+        return;
+    }
+
+    public function addBroadcasting($date)
+    {
+        if(!is_null($this->_idvideo))
+        {
+            $oci = self::getConnection();
+
+            $query = $oci->prepare("INSERT INTO diffusion VALUES (dif.nextval, :videoid, TO_DATE(:ddate, 'DD.MM.YY'))");
+            $query->bindParam(':videoid', $this->_idvideo, PDO::PARAM_INT);
+            $query->bindParam(':ddate', $date, PDO::PARAM_STR);
+            $query->execute();
+        }
+
+        return;
+    }
+
+    public function deleteVideo()
+    {
+        if(!is_null($this->_idvideo))
+        {
+            $oci = self::getConnection();
+
+            $query = $oci->prepare("DELETE FROM video WHERE idvideo=:videoid");
+            $query->bindParam(':videoid', $this->_idvideo, PDO::PARAM_INT);
+            $query->execute();
+
+            $query = $oci->prepare("DELETE FROM episode WHERE idvideo=:videoid");
+            $query->bindParam(':videoid', $this->_idvideo, PDO::PARAM_INT);
+            $query->execute();
+        }
+
+        return;
+    }
+
     public function isFavorite($id_user)
     {
         $oci = self::getConnection();
