@@ -13,12 +13,14 @@ Dans le cadre d'un projet universitaire en cours de Bases de données et program
 Pour faire fonctionner le site, votre ordinateur doit disposer de :
 
 - serveur de bases de données **Oracle**
-- serveur web **Apache** *version >2*
+- serveur Web **Apache** *version >2*
 - **PHP** *version >5*
 
 Après l'installation et la configuration de ces logiciels, il est nécessaire de créer la base de données du site en suivant les instructions au début du fichier [BDD.md](doc/BDD.md).
 
-Puis, dans le fichier [config.php](shared/config.php) se trouvant dans le répertoire *config* du projet, les paramètres de vos serveurs Oracle et Apache (les adresses, le port, le nom de l'utilisateur de bases de données, etc.) sont à renseigner.
+Puis, copier l'intégralité de l'arborescence avec tous les fichiers du projet dans un dossier sur votre serveur Web et y configurer un site (voir les instructions disponibles sur Internet).
+
+Enfin, dans le fichier [config.php](shared/config.php) se trouvant dans le répertoire *config* du projet, les paramètres de vos serveurs Oracle et Apache (les adresses, le port, le nom de l'utilisateur de bases de données, etc.) sont à renseigner.
 
 ## Auteurs
 
