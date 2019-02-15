@@ -1,6 +1,6 @@
 # replay
 
-Site de replay vidéo d'une chaîne de télévision.
+Site de replay vidéo d'une chaîne de télévision
 
 ## À propos
 
