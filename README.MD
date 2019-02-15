@@ -22,7 +22,7 @@ Puis, dans le fichier [config.php](shared/config.php) se trouvant dans le réper
 
 ## Auteurs
 
-[Marek Felsoci](mailto:marek.felsoci@etu.unistra.fr) de l'[Université de Strasbourg](http://www.unistra.fr) en collaboration avec Arnaud Pinsun.
+[Marek Felsoci](mailto:marek.felsoci@etu.unistra.fr) de l'[Université de Strasbourg](http://www.unistra.fr).
 
 ## Licence
 
